@@ -47,24 +47,36 @@
 use std::io::Read;
 
 use chksum_reader as reader;
+#[cfg(feature = "async-runtime-tokio")]
+use tokio::io::AsyncRead;
 
 use crate::SHA2_512;
 
 /// A specialized [`Reader`](reader::Reader) type with the [`SHA2_512`] hash algorithm.
 pub type Reader<R> = reader::Reader<R, SHA2_512>;
 
+#[cfg(feature = "async-runtime-tokio")]
+/// A specialized [`AsyncReader`](reader::AsyncReader) type with the [`SHA2_512`] hash algorithm.
+pub type AsyncReader<R> = reader::AsyncReader<R, SHA2_512>;
+
 /// Creates new [`Reader`].
-pub fn new<R>(inner: R) -> Reader<R>
-where
-    R: Read,
-{
+pub fn new(inner: impl Read) -> Reader<impl Read> {
     reader::new(inner)
 }
 
 /// Creates new [`Reader`] with provided hash.
-pub fn with_hash<R>(inner: R, hash: SHA2_512) -> Reader<R>
-where
-    R: Read,
-{
+pub fn with_hash(inner: impl Read, hash: SHA2_512) -> Reader<impl Read> {
     reader::with_hash(inner, hash)
+}
+
+#[cfg(feature = "async-runtime-tokio")]
+/// Creates new [`AsyncReader`].
+pub fn async_new(inner: impl AsyncRead) -> AsyncReader<impl AsyncRead> {
+    reader::async_new(inner)
+}
+
+#[cfg(feature = "async-runtime-tokio")]
+/// Creates new [`AsyncReader`] with provided hash.
+pub fn async_with_hash(inner: impl AsyncRead, hash: SHA2_512) -> AsyncReader<impl AsyncRead> {
+    reader::async_with_hash(inner, hash)
 }
