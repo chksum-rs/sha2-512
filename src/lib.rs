@@ -8,7 +8,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! chksum-sha2-512 = "0.0.0"
+//! chksum-sha2-512 = "0.1.0"
 //! ```
 //!
 //! Alternatively, you can use the [`cargo add`](https://doc.rust-lang.org/cargo/commands/cargo-add.html) subcommand:
@@ -246,7 +246,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! chksum-sha2-512 = { version = "0.0.0", features = ["reader", "writer"] }
+//! chksum-sha2-512 = { version = "0.1.0", features = ["reader", "writer"] }
 //! ```
 //!
 //! Alternatively, you can use the [`cargo add`](https://doc.rust-lang.org/cargo/commands/cargo-add.html) subcommand:
