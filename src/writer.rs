@@ -45,11 +45,17 @@
 use std::io::Write;
 
 use chksum_writer as writer;
+#[cfg(feature = "async-runtime-tokio")]
+use tokio::io::AsyncWrite;
 
 use crate::SHA2_512;
 
 /// A specialized [`Writer`](writer::Writer) type with the [`SHA2_512`] hash algorithm.
 pub type Writer<W> = writer::Writer<W, SHA2_512>;
+
+#[cfg(feature = "async-runtime-tokio")]
+/// A specialized [`AsyncWriter`](writer::AsyncWriter) type with the [`SHA2_512`] hash algorithm.
+pub type AsyncWriter<R> = writer::AsyncWriter<R, SHA2_512>;
 
 /// Creates new [`Writer`].
 pub fn new(inner: impl Write) -> Writer<impl Write> {
@@ -59,4 +65,16 @@ pub fn new(inner: impl Write) -> Writer<impl Write> {
 /// Creates new [`Writer`] with provided hash.
 pub fn with_hash(inner: impl Write, hash: SHA2_512) -> Writer<impl Write> {
     writer::with_hash(inner, hash)
+}
+
+#[cfg(feature = "async-runtime-tokio")]
+/// Creates new [`AsyncWriter`].
+pub fn async_new(inner: impl AsyncWrite) -> AsyncWriter<impl AsyncWrite> {
+    writer::async_new(inner)
+}
+
+#[cfg(feature = "async-runtime-tokio")]
+/// Creates new [`AsyncWriter`] with provided hash.
+pub fn async_with_hash(inner: impl AsyncWrite, hash: SHA2_512) -> AsyncWriter<impl AsyncWrite> {
+    writer::async_with_hash(inner, hash)
 }
